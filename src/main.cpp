@@ -185,13 +185,13 @@ void disque(sil::Image fond)
     fond.save("output/fond_disque.png");
 }
 
-void cercle(sil::Image fond, int thickness)
+void cercle(sil::Image& fond, int thickness, int center_x, int center_y)
 {
     for (int x{0}; x < fond.width(); x++)
     {
         for (int y{0}; y < fond.height(); y++)
         {
-            if (pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) > 10000 - thickness && pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) < 10000 + thickness)
+            if (pow(x - center_x, 2) + pow(y - center_y, 2) > 10000 - thickness && pow(x - center_x, 2) + pow(y - center_y, 2) < 10000 + thickness)
             {
                 fond.pixel(x, y).r = 255;
                 fond.pixel(x, y).g = 255;
@@ -200,30 +200,39 @@ void cercle(sil::Image fond, int thickness)
         }
     }
     // TODO: modifier l'image
-    fond.save("output/fond_cercle.png");
+    // fond.save("output/fond_cercle.png");
 }
 
 void rosace(sil::Image fond, int thickness)
 {
-    for (int x{0}; x < fond.width(); x++)
-    {
-        for (int y{0}; y < fond.height(); y++)
-        {
-            if (pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) > 10000 - thickness && pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) < 10000 + thickness)
-            {
-                fond.pixel(x, y).r = 255;
-                fond.pixel(x, y).g = 255;
-                fond.pixel(x, y).b = 255;
-            };
+    cercle(fond, 200, fond.width() / 2, fond.height()/2);
 
-            if (pow(x - fond.width() / 4, 2) + pow(y - 3*fond.height() / 4, 2) > 10000 - thickness && pow(x - fond.width() / 4, 2) + pow(y - 3*fond.height() / 4, 2) < 10000 + thickness)
-            {
-                fond.pixel(x, y).r = 255;
-                fond.pixel(x, y).g = 255;
-                fond.pixel(x, y).b = 255;
-            };
-        }
+    for(int i=0; i < 6; i++)
+
+    {
+        cercle(fond, 200, fond.width() / 2 + 100 * std::cos(i * (2 * M_PI / 6)), fond.height()/2 + 100 * std::sin(i * (2 * M_PI / 6)));
     }
+
+    // cercle(fond, 200, fond.width() / 2+100, fond.height()/2);
+    // for (int x{0}; x < fond.width(); x++)
+    // {
+    //     for (int y{0}; y < fond.height(); y++)
+    //     {
+    //         if (pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) > 10000 - thickness && pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) < 10000 + thickness)
+    //         {
+    //             fond.pixel(x, y).r = 255;
+    //             fond.pixel(x, y).g = 255;
+    //             fond.pixel(x, y).b = 255;
+    //         };
+
+    //         if (pow(x - fond.width() / 4, 2) + pow(y - 3*fond.height() / 4, 2) > 10000 - thickness && pow(x - fond.width() / 4, 2) + pow(y - 3*fond.height() / 4, 2) < 10000 + thickness)
+    //         {
+    //             fond.pixel(x, y).r = 255;
+    //             fond.pixel(x, y).g = 255;
+    //             fond.pixel(x, y).b = 255;
+    //         };
+    //     }
+    // }
     // TODO: modifier l'image
     fond.save("output/fond_rosace.png");
 }
@@ -247,5 +256,5 @@ int main()
     eclaircissement(photo) ;*/
     // disque(fond);
     // cercle(fond, 200);
-    rosace(fond, 200) ;
+    // rosace(fond, 200) ;
 }
