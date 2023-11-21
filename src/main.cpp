@@ -2,6 +2,9 @@
 #include "random.hpp"
 #include <math.h>
 #include <stdlib.h>
+#ifndef M_PI
+#define M_PI 3.14159265358979323846
+#endif
 
 void vert(sil::Image image)
 {
@@ -28,10 +31,10 @@ void gris(sil::Image image)
 {
     for (glm::vec3 &color : image.pixels())
     {
-        float moyenne = (color.r + color.g + color.b) / 3 ;
-        color.r = moyenne ;
-        color.g = moyenne ;
-        color.b = moyenne ;
+        float moyenne = (color.r + color.g + color.b) / 3;
+        color.r = moyenne;
+        color.g = moyenne;
+        color.b = moyenne;
     }
     // TODO: modifier l'image
     image.save("output/pouet_gris.png");
@@ -41,9 +44,9 @@ void negatif(sil::Image image)
 {
     for (glm::vec3 &color : image.pixels())
     {
-        color.r = (1-color.r) ;
-        color.g = (1-color.g) ;
-        color.b = (1-color.b) ;
+        color.r = (1 - color.r);
+        color.g = (1 - color.g);
+        color.b = (1 - color.b);
     }
     // TODO: modifier l'image
     image.save("output/pouet_negatif.png");
@@ -53,7 +56,7 @@ void degrade(sil::Image vide)
 {
     for (int x{0}; x < vide.width(); x++)
     {
-        float valeur = static_cast<float>(x) / vide.width() ;
+        float valeur = static_cast<float>(x) / vide.width();
         for (int y{0}; y < vide.height(); y++)
         {
             vide.pixel(x, y).r = valeur;
@@ -71,7 +74,7 @@ void miroir(sil::Image image)
     {
         for (int y{0}; y < image.height(); y++)
         {
-            std::swap(image.pixel(x, y), image.pixel(image.width() - 1 - x, y)) ;
+            std::swap(image.pixel(x, y), image.pixel(image.width() - 1 - x, y));
         }
     }
     // TODO: modifier l'image
@@ -82,12 +85,13 @@ void bruit(sil::Image image)
 {
     for (glm::vec3 &color : image.pixels())
     {
-        int random {random_int(0, 9)} ;
+        int random{random_int(0, 9)};
 
-        if (random == 0) {
-            color.r = random_float(0, 1) ;
-            color.g = random_float(0, 1) ;
-            color.b = random_float(0, 1) ;
+        if (random == 0)
+        {
+            color.r = random_float(0, 1);
+            color.g = random_float(0, 1);
+            color.b = random_float(0, 1);
         }
     }
     // TODO: modifier l'image
@@ -101,7 +105,7 @@ void rotation(sil::Image image)
     {
         for (int y{0}; y < image.height(); y++)
         {
-            fond.pixel(y, x) = image.pixel(x, image.height() - y - 1) ;
+            fond.pixel(y, x) = image.pixel(x, image.height() - y - 1);
         }
     }
     // TODO: modifier l'image
@@ -115,19 +119,23 @@ void split(sil::Image image)
     {
         for (int y{0}; y < image.height(); y++)
         {
-            if(x+15 > image.width() -1)
+            if (x + 15 > image.width() - 1)
             {
-                image2.pixel(x, y).r = image.pixel(image.width() -1, y).r ;
+                image2.pixel(x, y).r = image.pixel(image.width() - 1, y).r;
                 // image2.pixel(x, y).g = image.pixel(image.width() -1, y).g ;
-                image2.pixel(x, y).b = image.pixel(image.width() -1, y).b ;
-            } else if (x-15 < 0) {
-                image2.pixel(x, y).r = image.pixel(0, y).r ;
+                image2.pixel(x, y).b = image.pixel(image.width() - 1, y).b;
+            }
+            else if (x - 15 < 0)
+            {
+                image2.pixel(x, y).r = image.pixel(0, y).r;
                 // image2.pixel(x, y).g = image.pixel(0, y).g ;
-                image2.pixel(x, y).b = image.pixel(0, y).b ;
-            } else {
-                image2.pixel(x, y).r = image.pixel(x+15, y).r ;
+                image2.pixel(x, y).b = image.pixel(0, y).b;
+            }
+            else
+            {
+                image2.pixel(x, y).r = image.pixel(x + 15, y).r;
                 // image2.pixel(x, y).g = image.pixel(x, y).g ;
-                image2.pixel(x, y).b = image.pixel(x-15, y).b ;
+                image2.pixel(x, y).b = image.pixel(x - 15, y).b;
             }
         }
     }
@@ -165,12 +173,11 @@ void disque(sil::Image fond)
     {
         for (int y{0}; y < fond.height(); y++)
         {
-            //if(abs(x - fond.width() / 2) < 100 && abs(y - fond.height() / 2) < 100)
-            if((x - fond.width() / 2) * (x - fond.width() / 2) + (y - fond.height() / 2) * (y - fond.height() / 2) < 10000)
+            if (pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) < 10000)
             {
-                fond.pixel(x, y).r = 255 ;
-                fond.pixel(x, y).g = 255 ;
-                fond.pixel(x, y).b = 255 ;
+                fond.pixel(x, y).r = 255;
+                fond.pixel(x, y).g = 255;
+                fond.pixel(x, y).b = 255;
             };
         }
     }
@@ -178,18 +185,17 @@ void disque(sil::Image fond)
     fond.save("output/fond_disque.png");
 }
 
-void cercle(sil::Image fond)
+void cercle(sil::Image fond, int thickness)
 {
     for (int x{0}; x < fond.width(); x++)
     {
         for (int y{0}; y < fond.height(); y++)
         {
-            //if(abs(x - fond.width() / 2) < 100 && abs(y - fond.height() / 2) < 100)
-            if((x - fond.width() / 2) * (x - fond.width() / 2) + (y - fond.height() / 2) * (y - fond.height() / 2) < 10000)
+            if (pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) > 10000 - thickness && pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) < 10000 + thickness)
             {
-                fond.pixel(x, y).r = 255 ;
-                fond.pixel(x, y).g = 255 ;
-                fond.pixel(x, y).b = 255 ;
+                fond.pixel(x, y).r = 255;
+                fond.pixel(x, y).g = 255;
+                fond.pixel(x, y).b = 255;
             };
         }
     }
@@ -197,12 +203,37 @@ void cercle(sil::Image fond)
     fond.save("output/fond_cercle.png");
 }
 
+void rosace(sil::Image fond, int thickness)
+{
+    for (int x{0}; x < fond.width(); x++)
+    {
+        for (int y{0}; y < fond.height(); y++)
+        {
+            if (pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) > 10000 - thickness && pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) < 10000 + thickness)
+            {
+                fond.pixel(x, y).r = 255;
+                fond.pixel(x, y).g = 255;
+                fond.pixel(x, y).b = 255;
+            };
+
+            if (pow(x - fond.width() / 4, 2) + pow(y - fond.height() / 4, 2) > 10000 - thickness && pow(x - fond.width() / 4, 2) + pow(y - fond.height() / 4, 2) < 10000 + thickness)
+            {
+                fond.pixel(x, y).r = 255;
+                fond.pixel(x, y).g = 255;
+                fond.pixel(x, y).b = 255;
+            };
+        }
+    }
+    // TODO: modifier l'image
+    fond.save("output/fond_rosace.png");
+}
+
 int main()
 {
     sil::Image image{"images/logo.png"};
-    sil::Image vide{150/*width*/, 200/*height*/};
+    sil::Image vide{150 /*width*/, 200 /*height*/};
     sil::Image photo{"images/photo.jpg"};
-    sil::Image fond{500/*width*/, 500/*height*/};
+    sil::Image fond{500 /*width*/, 500 /*height*/};
     /*vert(image);
     canaux(image);
     gris(image) ;
@@ -214,6 +245,7 @@ int main()
     split(image) ;
     assombrissement(photo) ;
     eclaircissement(photo) ;*/
-    // disque(fond) ;
-    cercle(fond) ;
+    disque(fond);
+    cercle(fond, 200);
+    rosace(fond, 200) ;
 }
