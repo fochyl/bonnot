@@ -237,6 +237,19 @@ void rosace(sil::Image fond, int thickness)
     fond.save("output/fond_rosace.png");
 }
 
+void mosaique (sil::Image image)
+{
+    for (int x{0}; x < image.width(); x++)
+    {
+        for (int y{0}; y < image.height(); y++)
+        {
+
+        }
+    }
+    // TODO: modifier l'image
+    image.save("output/vide_degrade.png");
+}
+
 int main()
 {
     sil::Image image{"images/logo.png"};
@@ -257,4 +270,5 @@ int main()
     // disque(fond);
     // cercle(fond, 200);
     // rosace(fond, 200) ;
+    mosaique(image) ;
 }
