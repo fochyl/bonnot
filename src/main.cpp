@@ -1,6 +1,7 @@
 #include <sil/sil.hpp>
 #include "random.hpp"
 #include <math.h>
+#include <stdlib.h>
 
 void vert(sil::Image image)
 {
@@ -158,12 +159,51 @@ void eclaircissement(sil::Image photo)
     photo.save("output/photo_eclaircie.png");
 }
 
+void disque(sil::Image fond)
+{
+    for (int x{0}; x < fond.width(); x++)
+    {
+        for (int y{0}; y < fond.height(); y++)
+        {
+            //if(abs(x - fond.width() / 2) < 100 && abs(y - fond.height() / 2) < 100)
+            if((x - fond.width() / 2) * (x - fond.width() / 2) + (y - fond.height() / 2) * (y - fond.height() / 2) < 10000)
+            {
+                fond.pixel(x, y).r = 255 ;
+                fond.pixel(x, y).g = 255 ;
+                fond.pixel(x, y).b = 255 ;
+            };
+        }
+    }
+    // TODO: modifier l'image
+    fond.save("output/fond_disque.png");
+}
+
+void cercle(sil::Image fond)
+{
+    for (int x{0}; x < fond.width(); x++)
+    {
+        for (int y{0}; y < fond.height(); y++)
+        {
+            //if(abs(x - fond.width() / 2) < 100 && abs(y - fond.height() / 2) < 100)
+            if((x - fond.width() / 2) * (x - fond.width() / 2) + (y - fond.height() / 2) * (y - fond.height() / 2) < 10000)
+            {
+                fond.pixel(x, y).r = 255 ;
+                fond.pixel(x, y).g = 255 ;
+                fond.pixel(x, y).b = 255 ;
+            };
+        }
+    }
+    // TODO: modifier l'image
+    fond.save("output/fond_cercle.png");
+}
+
 int main()
 {
     sil::Image image{"images/logo.png"};
     sil::Image vide{150/*width*/, 200/*height*/};
     sil::Image photo{"images/photo.jpg"};
-    vert(image);
+    sil::Image fond{500/*width*/, 500/*height*/};
+    /*vert(image);
     canaux(image);
     gris(image) ;
     negatif(image) ;
@@ -173,5 +213,7 @@ int main()
     rotation(image) ;
     split(image) ;
     assombrissement(photo) ;
-    eclaircissement(photo) ;
+    eclaircissement(photo) ;*/
+    // disque(fond) ;
+    cercle(fond) ;
 }
