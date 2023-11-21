@@ -216,7 +216,7 @@ void rosace(sil::Image fond, int thickness)
                 fond.pixel(x, y).b = 255;
             };
 
-            if (pow(x - fond.width() / 4, 2) + pow(y - fond.height() / 4, 2) > 10000 - thickness && pow(x - fond.width() / 4, 2) + pow(y - fond.height() / 4, 2) < 10000 + thickness)
+            if (pow(x - fond.width() / 4, 2) + pow(y - 3*fond.height() / 4, 2) > 10000 - thickness && pow(x - fond.width() / 4, 2) + pow(y - 3*fond.height() / 4, 2) < 10000 + thickness)
             {
                 fond.pixel(x, y).r = 255;
                 fond.pixel(x, y).g = 255;
@@ -245,7 +245,7 @@ int main()
     split(image) ;
     assombrissement(photo) ;
     eclaircissement(photo) ;*/
-    disque(fond);
-    cercle(fond, 200);
+    // disque(fond);
+    // cercle(fond, 200);
     rosace(fond, 200) ;
 }
