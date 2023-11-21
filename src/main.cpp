@@ -212,42 +212,22 @@ void rosace(sil::Image fond, int thickness)
     {
         cercle(fond, 200, fond.width() / 2 + 100 * std::cos(i * (2 * M_PI / 6)), fond.height()/2 + 100 * std::sin(i * (2 * M_PI / 6)));
     }
-
-    // cercle(fond, 200, fond.width() / 2+100, fond.height()/2);
-    // for (int x{0}; x < fond.width(); x++)
-    // {
-    //     for (int y{0}; y < fond.height(); y++)
-    //     {
-    //         if (pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) > 10000 - thickness && pow(x - fond.width() / 2, 2) + pow(y - fond.height() / 2, 2) < 10000 + thickness)
-    //         {
-    //             fond.pixel(x, y).r = 255;
-    //             fond.pixel(x, y).g = 255;
-    //             fond.pixel(x, y).b = 255;
-    //         };
-
-    //         if (pow(x - fond.width() / 4, 2) + pow(y - 3*fond.height() / 4, 2) > 10000 - thickness && pow(x - fond.width() / 4, 2) + pow(y - 3*fond.height() / 4, 2) < 10000 + thickness)
-    //         {
-    //             fond.pixel(x, y).r = 255;
-    //             fond.pixel(x, y).g = 255;
-    //             fond.pixel(x, y).b = 255;
-    //         };
-    //     }
-    // }
     // TODO: modifier l'image
     fond.save("output/fond_rosace.png");
 }
 
 void mosaique (sil::Image image)
 {
-    for (int x{0}; x < image.width(); x++)
-    {
-        for (int y{0}; y < image.height(); y++)
-        {
+sil::Image fond {image.width(), image.height()} ;
 
-        }
+    for(int i=0; i<24; i++)
+    {
+        sil::Image logo_reduit {image} ;
+        logo_reduit.width() /= 5 ;
+
     }
     // TODO: modifier l'image
-    image.save("output/vide_degrade.png");
+    image.save("output/image_mosaique.png");
 }
 
 int main()
