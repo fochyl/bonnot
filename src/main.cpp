@@ -280,28 +280,21 @@ void fractale(sil::Image fond)
     {
         for (int y{0}; y < fond.height(); y++)
         {
-            std::complex<int> c{x / (fond.width()/2), y / (fond.height()/2)};
-            /*int i{0};
-
-            for (std::complex<int> z{0, 0}; std::abs(z) < 2; z = z * z + c){
-                fond.pixel(x, y).r = 1 ;
-                fond.pixel(x, y).g = 1 ;
-                fond.pixel(x, y).b = 1 ;
-                i++;
-            }*/
-            std::complex<int> z{0, 0};
-            for (int i{0}; i < 10; i++) {
+            std::complex<float> c{-2 + (static_cast<float>(x) / fond.width()) * 4, -2 + (static_cast<float>(y) / fond.height()) * 4};
+           
+            std::complex<float> z{0, 0};
+            int i{0};
+            do {
                 z = z * z + c ;
-                if (std::abs(z) > 2){
-                    fond.pixel(x, y).r = 1 - i * 0.1 ;
-                    fond.pixel(x, y).g = 1 - i * 0.1 ;
-                    fond.pixel(x, y).b = 1 - i * 0.1 ;
-                    break;
-                } else {
-                    fond.pixel(x, y).r = 1 ;
-                    fond.pixel(x, y).g = 1 ;
-                    fond.pixel(x, y).b = 1 ;
-                }
+                i++;
+            } while (std::abs(z) < 2 && i < 50) ;
+
+            if (i >= 50) {
+                fond.pixel(x,y) = glm::vec3(1);
+            } else {
+                fond.pixel(x, y).r = 0 + i * 0.02 ;
+                fond.pixel(x, y).g = 0 + i * 0.02 ;
+                fond.pixel(x, y).b = 0 + i * 0.02 ;
             }
         }
     }
@@ -330,6 +323,6 @@ int main()
     // cercle(fond, 200);
     // rosace(fond, 200) ;
     // mosaique(image, 5, 1) ;
-    glitch(image) ;
+    // glitch(image) ;
     fractale(fond) ;
 }
