@@ -2,6 +2,8 @@
 #include "random.hpp"
 #include <math.h>
 #include <stdlib.h>
+#include <complex>
+#include <glm/gtx/matrix_transform_2d.hpp>
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
 #endif
@@ -216,18 +218,91 @@ void rosace(sil::Image fond, int thickness)
     fond.save("output/fond_rosace.png");
 }
 
-void mosaique (sil::Image image)
+void mosaique(sil::Image const& image, int repetition, bool mirror)
 {
-sil::Image fond {image.width(), image.height()} ;
+    int const mosaique_width = image.width() * repetition;
+    int const mosaique_height = image.height() * repetition;
+    sil::Image newImage {mosaique_width,mosaique_height};
 
-    for(int i=0; i<24; i++)
+    for (int x{0}; x < mosaique_width; x++)
     {
-        sil::Image logo_reduit {image} ;
-        logo_reduit.width() /= 5 ;
+        for (int y{0}; y < mosaique_height; y++)
+        {
 
+            int const newX = x% image.width();
+            int const newY = y% image.height();
+            if (mirror && x/image.width() % 2 == 1)
+            {
+                newImage.pixel(x, y) = image.pixel(image.width() - newX - 1, newY);
+            }
+            else
+            {
+                newImage.pixel(x, y) = image.pixel(newX, newY);
+            }
+        }
+    }
+    newImage.save("output/puet_mosaique_miroir.png");
+}
+
+void glitch(sil::Image image)
+{
+    for (int x{0}; x < image.width(); x++)
+    {
+        for (int y{0}; y < image.height(); y++)
+        {
+            int random{random_int(0,19)} ;
+
+            if (random == 0) {
+                int x2 {random_int(0, image.width())};
+                int y2 {random_int(0, image.height())};
+                int height {random_int(5, 15)};
+                for(int i{0}; i<(25+random_int(0, 24)); i++) {
+                    std::swap(image.pixel(x+i, y), image.pixel(x2 + i, y2)) ;
+                    for(int j{1}; j<height; j++) {
+                    std::swap(image.pixel(x+i, y+j), image.pixel(x2 + i, y2+j)) ;
+                }
+                }
+            }
+            
+        }
     }
     // TODO: modifier l'image
-    image.save("output/image_mosaique.png");
+    image.save("output/pouet_glitch.png");
+}
+
+void fractale(sil::Image fond)
+{
+    for (int x{0}; x < fond.width(); x++)
+    {
+        for (int y{0}; y < fond.height(); y++)
+        {
+            std::complex<int> c{x / (fond.width()/2), y / (fond.height()/2)};
+            /*int i{0};
+
+            for (std::complex<int> z{0, 0}; std::abs(z) < 2; z = z * z + c){
+                fond.pixel(x, y).r = 1 ;
+                fond.pixel(x, y).g = 1 ;
+                fond.pixel(x, y).b = 1 ;
+                i++;
+            }*/
+            std::complex<int> z{0, 0};
+            for (int i{0}; i < 10; i++) {
+                z = z * z + c ;
+                if (std::abs(z) > 2){
+                    fond.pixel(x, y).r = 1 - i * 0.1 ;
+                    fond.pixel(x, y).g = 1 - i * 0.1 ;
+                    fond.pixel(x, y).b = 1 - i * 0.1 ;
+                    break;
+                } else {
+                    fond.pixel(x, y).r = 1 ;
+                    fond.pixel(x, y).g = 1 ;
+                    fond.pixel(x, y).b = 1 ;
+                }
+            }
+        }
+    }
+    // TODO: modifier l'image
+    fond.save("output/fond_fractale.png");
 }
 
 int main()
@@ -250,5 +325,7 @@ int main()
     // disque(fond);
     // cercle(fond, 200);
     // rosace(fond, 200) ;
-    mosaique(image) ;
+    // mosaique(image, 5, 1) ;
+    glitch(image) ;
+    fractale(fond) ;
 }
