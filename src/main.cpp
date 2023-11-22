@@ -250,20 +250,24 @@ void glitch(sil::Image image)
     {
         for (int y{0}; y < image.height(); y++)
         {
-            int random{random_int(0,19)} ;
+            int random{random_int(0,5000)} ;
 
             if (random == 0) {
-                int x2 {random_int(0, image.width())};
-                int y2 {random_int(0, image.height())};
-                int height {random_int(5, 15)};
-                for(int i{0}; i<(25+random_int(0, 24)); i++) {
-                    std::swap(image.pixel(x+i, y), image.pixel(x2 + i, y2)) ;
+                int x2 {random_int(0, image.width() - 1)};
+                int y2 {random_int(0, image.height() -1)};
+                int width {random_int(24, 49)} ;
+                int height {random_int(5, 14)};
+                for(int i{0}; i<width; i++) {
+                    if(x+i<image.width() && x2+i < image.width()) {
+                        std::swap(image.pixel(x+i, y), image.pixel(x2 + i, y2)) ;
+                    }
                     for(int j{1}; j<height; j++) {
-                    std::swap(image.pixel(x+i, y+j), image.pixel(x2 + i, y2+j)) ;
+                        if (y+j < image.height() && y2 + j < image.height() && x+i<image.width() && x2+i < image.width()) {
+                            std::swap(image.pixel(x+i, y+j), image.pixel(x2 + i, y2+j)) ;
+                        }
                 }
                 }
             }
-            
         }
     }
     // TODO: modifier l'image
