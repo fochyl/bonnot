@@ -302,12 +302,49 @@ void fractale(sil::Image fond)
     fond.save("output/fond_fractale.png");
 }
 
+float lum ( int x, int y, sil::Image const &photo) {
+        float lum = (photo.pixel(x, y).r + photo.pixel(x, y).g + photo.pixel(x, y).b) / 3 ;
+        return lum ;
+    }
+
+void normalisation(sil::Image photo){
+    float min_lum {1} ;
+    float max_lum{0} ;
+    for (int x{0}; x < photo.width(); x++)
+    {
+        for (int y{0}; y < photo.height(); y++)
+        {
+            if (lum(x, y, photo) < min_lum)
+            {
+                min_lum = lum(x, y, photo) ;
+            }
+
+            if (lum(x, y, photo) > max_lum)
+            {
+                max_lum = lum(x, y, photo) ;
+            }
+        }
+    }
+
+    for (int x{0}; x < photo.width(); x++)
+    {
+        for (int y{0}; y < photo.height(); y++)
+        {
+            photo.pixel(x, y) = (photo.pixel(x, y) - min_lum) / (max_lum - min_lum) ;
+           
+        }
+    }
+    // TODO: modifier l'image
+    photo.save("output/photo_normalisation.png");
+}
+
 int main()
 {
     sil::Image image{"images/logo.png"};
     sil::Image vide{150 /*width*/, 200 /*height*/};
-    sil::Image photo{"images/photo.jpg"};
+    // sil::Image photo{"images/photo.jpg"};
     sil::Image fond{500 /*width*/, 500 /*height*/};
+    sil::Image photo{"images/photo_faible_contraste.jpg"} ;
     /*vert(image);
     canaux(image);
     gris(image) ;
@@ -324,5 +361,6 @@ int main()
     // rosace(fond, 200) ;
     // mosaique(image, 5, 1) ;
     // glitch(image) ;
-    fractale(fond) ;
+    // fractale(fond) ;
+    normalisation(photo) ;
 }
