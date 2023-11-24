@@ -338,6 +338,87 @@ void normalisation(sil::Image photo){
     photo.save("output/photo_normalisation.png");
 }
 
+/*void brightness(sil::Image image, float color) {
+    float min_lum {1} ;
+    float max_lum{0} ;
+    for (int x{0}; x < photo.width(); x++)
+    {
+        for (int y{0}; y < photo.height(); y++)
+        {
+            if (lum(x, y, photo) < min_lum)
+            {
+                min_lum = lum(x, y, photo) ;
+            }
+
+            if (lum(x, y, photo) > max_lum)
+            {
+                max_lum = lum(x, y, photo) ;
+            }
+        }
+    }
+}
+
+ void tri(sil::Image image)
+{
+    for (glm::vec3 &color : image.pixels())
+    {
+        std::vector<glm::vec3> v{};
+        std::sort(v.begin(), v.end(), [](glm::vec3 const& color1, glm::vec3 const& color2)
+        {
+            return brightness(color1) < brightness(color2); // Trie selon la luminosité des couleurs (NB : c'est à vous de coder la fonction `brightness`)
+        });
+            }
+    // TODO: modifier l'image
+    image.save("output/pouet_tri.png");
+}
+
+float brightness ( int x, int y, sil::Image const &image) {
+        float value = (image.pixel(x, y).r + image.pixel(x, y).g + image.pixel(x, y).b) / 3 ;
+        return value ;
+    }
+
+void tri(sil::Image photo){
+
+    for (int x{0}; x < photo.width(); x++)
+    {
+        for (int y{0}; y < photo.height(); y++)
+        {
+            int random {random_int(0, 19)};
+            if (random == 0) {
+                float brightest {1};
+                for (int x0{x}; x0 < photo.width(); x0++) {
+                    
+                }
+            }
+        }
+    }
+    for (int x{0}; x < photo.width(); x++)
+    {
+        for (int y{0}; y < photo.height(); y++)
+        {
+            photo.pixel(x, y) = (photo.pixel(x, y) - min_lum) / (max_lum - min_lum) ;
+           
+        }
+    }
+    // TODO: modifier l'image
+    photo.save("output/photo_normalisation.png");
+}*/
+
+float brightness(glm::vec3 color) {
+    float value {(color.r + color.g + color.b) / 3} ;
+    return value ;
+}
+
+void tri(sil::Image image)
+{
+    std::sort(image.pixels().begin(), image.pixels().end(), [](glm::vec3 const& color1, glm::vec3 const& color2)
+    {
+        return brightness(color1) < brightness(color2); // Trie selon la luminosité des couleurs (NB : c'est à vous de coder la fonction `brightness`)
+    });
+    // TODO: modifier l'image
+    image.save("output/pouet_tri.png");
+}
+
 int main()
 {
     sil::Image image{"images/logo.png"};
@@ -362,5 +443,6 @@ int main()
     // mosaique(image, 5, 1) ;
     // glitch(image) ;
     // fractale(fond) ;
-    normalisation(photo) ;
+    // normalisation(photo) ;
+    tri(image) ;
 }
