@@ -411,10 +411,13 @@ float brightness(glm::vec3 color) {
 
 void tri(sil::Image image)
 {
-    std::sort(image.pixels().begin(), image.pixels().end(), [](glm::vec3 const& color1, glm::vec3 const& color2)
+    for (int i{1}; i < image.height() - 2; i++)
     {
-        return brightness(color1) < brightness(color2); // Trie selon la luminosité des couleurs (NB : c'est à vous de coder la fonction `brightness`)
-    });
+        std::sort(image.pixels().begin() + i * image.width(), image.pixels().begin() + 2 * image.width(), [](glm::vec3 const& color1, glm::vec3 const& color2)
+        {
+            return brightness(color1) < brightness(color2); // Trie selon la luminosité des couleurs (NB : c'est à vous de coder la fonction `brightness`)
+        });
+    }
     // TODO: modifier l'image
     image.save("output/pouet_tri.png");
 }
