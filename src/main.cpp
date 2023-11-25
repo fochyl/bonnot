@@ -378,5 +378,5 @@ int main()
     // glitch(image) ;
     // fractale(fond) ;
     // normalisation(photo) ;
-    tri(image) ;
+    // tri(image) ;
 }

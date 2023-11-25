@@ -1,6 +1,40 @@
 # 🐣 Rapport de Christian et Théo
 
-##NIVEAU 1
+- [🐣 Rapport de Christian et Théo](#-rapport-de-christian-et-théo)
+  - [NIVEAU 1](#niveau-1)
+    - [Ne gardez que le vert](#ne-gardez-que-le-vert)
+    - [Échanger les canaux](#échanger-les-canaux)
+    - [Noir \& Blanc](#noir--blanc)
+    - [Négatif](#négatif)
+    - [Dégradé](#dégradé)
+  - [NIVEAU 2](#niveau-2)
+    - [Miroir](#miroir)
+    - [Image bruitée](#image-bruitée)
+    - [Rotation de 90°](#rotation-de-90)
+    - [RGB split](#rgb-split)
+    - [Luminosité](#luminosité)
+  - [NIVEAU 3](#niveau-3)
+    - [Disque](#disque)
+      - [Cercle](#cercle)
+      - [Rosace](#rosace)
+    - [Mosaïque](#mosaïque)
+      - [Mosaïque miroir](#mosaïque-miroir)
+    - [Glitch](#glitch)
+    - [Fractale de Mandelbrot](#fractale-de-mandelbrot)
+    - [Vortex](#vortex)
+    - [Tramage](#tramage)
+    - [Normalisation de l'histogramme](#normalisation-de-lhistogramme)
+  - [NIVEAU 4](#niveau-4)
+    - [Convolutions](#convolutions)
+      - [Netteté, Contours, etc.](#netteté-contours-etc)
+      - [Filtres séparables](#filtres-séparables)
+      - [Différence gaussienne](#différence-gaussienne)
+    - [Tri de pixels](#tri-de-pixels)
+  - [NIVEAU 5](#niveau-5)
+    - [Filtre de Kuwahara (effet peinture à huile)](#filtre-de-kuwahara-effet-peinture-à-huile)
+
+
+## NIVEAU 1
 
 ### Ne gardez que le vert
 
@@ -34,7 +68,7 @@
 
 **Méthode :** On parcours tous les pixels, puis on obtient de nouvelles valeurs de rouge, de vert et de bleu pour chacun d'entre eux en soustrayant à 1 les valeurs d'origine.
 
-### Noir & Blanc
+### Dégradé
 
 | ![image](./images/logo.png)| ![image](./output/pouet_gris.png)|
 |:--------------------------:|:--------------------------------:|
@@ -44,7 +78,9 @@
 
 **Piège :** Il faut bien penser à convertir les *x* en *float* grâce à un *static_cast* pour définir les niveaux de gris.
 
-##NIVEAU 2
+---
+
+## NIVEAU 2
 
 ### Miroir
 
@@ -94,10 +130,156 @@
 - augmenter leurs valeurs de rouge, de vert et de bleu grâce à une puissance supérieure à 1 ;
 - diminuer ces valeurs à l'aide d'une puissance comprise entre 0 et 1.
 
-##NIVEAU 3
+---
 
-###Disque
+## NIVEAU 3
+
+### Disque
 
 ![image](./output/fond_disque.png)
 
+**Méthode :** On sélectionne chaque pixel de l'image et on calcule la distance qui le sépare du centre. Si cette distance est égale ou inférieure au rayon du disque alors on rend le pixel blanc.
+
+#### Cercle
+
+![image](./output/fond_cercle.png)
+
+**Méthode :** On reprend le même principe que pour l'exercice précédant, sauf que la distance séparant le pixel du centre doit être comprise entre *rayon* et *rayon + thickness*.
+
+#### Rosace
+
+![image](./output/fond_rosace.png)
+
+**Méthode :** On trace le premier cercle au centre de l'image, puis on trace les autres autour de celui-ci en transformant leurs origines respectives de coordonnées (*x*, *y*) sous la forme (*r cos(angle)*, *r sin(angle)*). La valeur des angles est définie par une boucle : *angle = 2 i pi / 6*.
+
+**Piège :** En passant de coordonnées cartésiennes à coordonnées polaires, il ne faut pas oublier de resituer celles-ci par rapport au centre de l'image. Par exemple, `center_x = image.width()/2 + r cos(angle)`.
+
+### Mosaïque
+
+![image](./output/pouet_mosaique.png)
+
 **Méthode :**
+
+**Piège :** Si t'en trouves
+
+#### Mosaïque miroir
+
+![image](./output/pouet_mosaique_miroir.png)
+
+**Méthode :**
+
+**Piège :** Si t'en trouves
+
+### Glitch
+
+| ![image](./images/logo.png)| ![image](./output/pouet_glitch.png)|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :** A chaque pixel, on génère un nombre aléatoire compris entre 1 et *n*. Si *n = 0*, alors on sélectionne un second pixel aléatoirement qui sert de base pour créer un rectangle aux dimensions elles-aussi aléatoires. On échange ensuite les pixels de ce rectangle avec le pixel d'origine et ses voisins.
+
+**Piège :** Il faut gérer les dépassements pour que le rectangle formé n'aille pas au-delà des extrémités de l'image.
+
+### Fractale de Mandelbrot
+
+![image](./output/fond_fractale.png)
+
+**Méthode :** A chaque pixel, on associe un nombre complexe *x + iy* qu'on place ensuite dans un intervalle compris entre -2 et 2. On crée ensuite une boucle qui itère *n* fois `i++` et `z = z * z + c`. Si *abs(z)* ne dépasse jamais 2 d'ici la fin de la boucle (quand *i = n*), alors le pixel associé devient noir. Sinon, les niveaux de rouge, de vert et de bleu du pixel parcouru prennent la valeur *i/n*.
+
+**Piège :** Il faut convertir *x* et *y* en *float* lorsque qu'on place les nombres complexes dans un intervalle compris entre -2 et 2.
+
+### Vortex
+
+| ![image](./images/logo.png)| ![image](./output/pouet_.png)|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :**
+
+**Piège :** Si t'en trouves
+
+### Tramage
+
+| ![image](./images/photo.jpg)| ![image](./output/photo_)jp|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :** 
+
+**Piège :** Si t'en trouves
+
+### Normalisation de l'histogramme
+
+| ![image](./images/photo_faible_contraste.jpg)| ![image](./output/photo_normalisation.png)|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :** On parcourt une première fois l'image pour trouver le pixel le moins lumineux et le pixel le plus lumineux. Après avoir transformé la courbe de l'histogramme en fonction affine, on peut ensuite parcourir une seconde fois l'image cette fois-ci en modifiant les valeurs.
+
+---
+
+## NIVEAU 4
+
+### Convolutions
+
+| ![image](./images/logo.png)| ![image](./output/pouet_.png)|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :**
+
+**Piège :** Si t'en trouves
+
+#### Netteté, Contours, etc.
+
+| ![image](./images/logo.png)| ![image](./output/pouet_.png)|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :**
+
+**Piège :** Si t'en trouves
+
+#### Filtres séparables
+
+| ![image](./images/logo.png)| ![image](./output/pouet_.png)|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :**
+
+**Piège :** Si t'en trouves
+
+#### Différence gaussienne
+
+| ![image](./images/photo.jpg)| ![image](./output/photo_g)|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :**
+
+**Piège :** Si t'en trouves
+
+### Tri de pixels
+
+| ![image](./images/logo.png)| ![image](./output/pouet_tri.png)|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :** On crée une fonction mesurant la luminosité d'un pixel puis on ordonne les images du début à la fin par luminosité décroissante.
+
+**Remarque :** Il nous reste à adapter la fonction pour trier les pixels horizontalement.
+
+---
+
+## NIVEAU 5
+
+### Filtre de Kuwahara (effet peinture à huile)
+
+| ![image](./images/photo.jpg)| ![image](./output/photo_g)|
+|:--------------------------:|:--------------------------------:|
+|            Avant           |               Après              |
+
+**Méthode :**
+
+**Piège :** Si t'en trouves
